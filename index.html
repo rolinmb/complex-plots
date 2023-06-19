@@ -1,9 +1,40 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>View Complex Function Behavior</title>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.1/math.js"></script>
+	<script src="index.js"></script>
+	<title>Complex Function Behavior</title>
 </head>
 <body>
-
+	<h1>Input Plane</h1>
+	<h3>Select a point as an input from the Complex Plane (the function domain):</h3>
+	<div class="plotly-area" id="z-input"></div>
+	<br />
+	<div id="input-display"></div>
+	<br />
+	<div id="input-form-wrap">
+		<form id="input-form" onsubmit="inputSubmitHandle(event)">
+			<input id="x-input" type="number" step="any" value="" placeholder="x" />
+			<input id="y-input" type="number" step="any" value="" placeholder="y" />
+			<input id="input-submit-btn" type="submit" value="Submit Input">
+		</form>
+	</div>
+	<br />
+	<h3>Enter a function to pass the selected point through:</h3>
+	<br />
+	<div id="function-display"></div>
+	<br />
+	<div id="function-eval" ></div>
+	<br />
+	<div id="function-form-wrap">
+		<form id="function-form" onsubmit="fzEntryHandle(event)">
+			<input id="function-string" type="text" value="" placeholder="z" />
+			<input id="function-submit-btn" type="submit" value="Update Output Plane">
+		</form>
+	</div>
+	<h1>Output Plane</h1>
+	<h3>The entered Complex function output domain:</h3>
+	<div class="plotly-area" id="z-output"></div>
 </body>
 </html>
