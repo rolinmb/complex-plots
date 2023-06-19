@@ -1,0 +1,21 @@
+#input-output {
+	display: flex;
+}
+
+.plotly-area {
+	flex: 50%;
+	width: 400px;
+	height: 400px;
+}
+
+#submit-wrap {
+	display: flex;
+}
+
+.form-wrap {
+	flex: 50%;
+}
+
+#function-text-display {
+	display: block;
+}

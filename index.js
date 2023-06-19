@@ -10,7 +10,22 @@ function inputSubmitHandle(event){
 	z_in = math.complex(X,Y);
 	console.log("z = "+z_in.toString());
 	document.getElementById("input-display").innerHTML = "INPUT: z = "+z_in.toString();
-	// update "z-input" div
+	var inputPlane = document.getElementById("z-input");
+	let inputData = [{
+		x: [z_in.re],
+		y: [z_in.im],
+		type:"scatter"
+	}];
+	let inputLayout = {
+		title: "Complex Domain",
+		xaxis: {
+			rangemode: 'tozero'
+		},
+		yaxis: {
+			rangemode: 'tozero'
+		}
+	};
+	Plotly.newPlot(inputPlane,inputData,inputLayout);
 }
 
 function fzEntryHandle(event){
@@ -29,5 +44,20 @@ function fzEntryHandle(event){
 	console.log("f("+z_in.toString()+") = "+z_out.toString());
 	let new_text = "* f("+z_in.toString()+") = "+z_out.toString();
 	document.getElementById("function-eval").innerHTML = new_text;
-	// update "z-output" div
+	var outputPlane = document.getElementById("z-output");
+	const outputData = [{
+		x: [z_out.re],
+		y: [z_out.im],
+		type:"scatter"
+	}];
+	let outputLayout = {
+		title: "Complex Range",
+		xaxis: {
+			rangemode: 'tozero'
+		},
+		yaxis: {
+			rangemode: 'tozero'
+		}
+	};
+	Plotly.newPlot(outputPlane,outputData,outputLayout);
 }
