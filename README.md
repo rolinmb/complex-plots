@@ -1,1 +1,1 @@
-Using Plotly.js to view input and associated output of complex funcions f(z)
+Using mathjs and Plotly.js to view input and associated output of complex funcions f(z)

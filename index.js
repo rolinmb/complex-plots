@@ -94,104 +94,19 @@ function inputSubmitHandle(event){
 	// update "z-input" div
 }
 
-function parseExpression(expression) {
-	const numberPattern = /[+\-]?\d+(\.\d+)?/g; // caputre constants
-	const variablePattern = /[a-zA-Z][a-zA-Z0-9]*/g; // capture z
-	const operatorPattern = /[+\-*/^]/g; // caputre operations
-	const parenthesesPattern = /[()]/g; // capture nestings
-	const numbers = expression.match(numberPattern);
-	const variables = expression.match(variablePattern);
-	const operators = expression.match(operatorPattern);
-	const parentheses = expression.match(parenthesesPattern);
-	if(!numbers || !operators){
-		throw new Error('Invalid expression');
-	}
-	let evalExpression = expression.replace(variablePattern, 'z').replace(/i/g, 'i.real'); // capture i
-	evalExpression = evalExpression.replace(/\^/g, '**'); // capture exponents
-	const parsedExpression = {
-		numbers: numbers.map(Number),
-		variables: variables || [],
-		operators: operators,
-		parentheses: parentheses || [],
-		tokens: evalExpression.match(/([+\-]?\d+(\.\d+)?|[a-zA-Z][a-zA-Z0-9]*|[+\-*/^()])/g),
-		evaluate: (z, i) => {
-			console.log(typeof z);
-			const stack = [];
-			const operatorPrecedence = {
-				'^': 3,
-				'*': 2,
-				'/': 2,
-				'+': 1,
-				'-': 1
-			};
-			function applyOperator(operator){
-				const [b,a] = [stack.pop(),stack.pop()];
-				console.log("stack.pop()[1st call] = b: "+b+" "+typeof b);
-				console.log("stack.pop()[2nd call] = a: "+a+" "+typeof a);
-				switch(operator){
-					case '^':
-						stack.push(cPower(a,b));
-						break;
-					case '*':
-						stack.push(cMult(a,b));
-						break;
-					case '/':
-						stack.push(cDiv(a,b));
-						break;
-					case '+':
-						stack.push(cAdd(a,b));
-						break;
-					case '-':
-						stack.push(cSub(a,b));
-						break;
-				}
-				console.log('stack: '+stack+" "+typeof stack);
-			}
-			for(const token of parsedExpression.tokens){
-				if(token in operatorPrecedence){
-					while(
-						stack.length > 0 &&
-						stack[stack.length-1] in operatorPrecedence && 
-						operatorPrecedence[token] <= operatorPrecedence[stack[stack.length-1]]
-					){
-						applyOperator(stack.pop());
-					}
-					stack.push(token);
-				}else if (token === '('){
-					stack.push(token);
-				}else if(token === ')'){
-					while (stack.length > 0 && stack[stack.length-1] !== '(') {
-						applyOperator(stack.pop());
-					}					
-					stack.pop();
-				}else{
-					stack.push(new cNum(Number(token), 0));
-				}
-			}
-			while(stack.length > 1) {
-				applyOperator(stack.pop());
-			}
-			return stack[0];
-		}
-	};
-	return parsedExpression;
-}
-
 function fzEntryHandle(event){
 	event.preventDefault();
 	let fz_string = document.getElementById("function-string").value;
 	if(fz_string === ""){ return; }
 	document.getElementById("function-display").innerHTML = "* f(z) = "+fz_string;
-	const parsed_expr = parseExpression(fz_string);
+	const parsed_expr = math.parse(fz_string);
 	if(typeof z_in === 'undefined'){
-		console.log(typeof z_in);
-		z_in = new cNum(0,0); // z^2 default
-		console.log(typeof z_in);
-		z_out = cMult(z, z);
-	}else{ // parsed expression
-		console.log(typeof z_in);
-		z_out = parsed_expr.evaluate(z_in,i);
+		z_in = new cNum(0,0);
 	}
+	const z = math.complex(z_in.real,z_in.imag);
+	const scope = { z };
+	const result = parsed_expr.evaluate(scope);
+	z_out = new cNum(result.re,result.im);
 	console.log("f("+z_in.toString()+") = "+z_out.toString());
 	fsign = z_out.imag >= 0 ? "+" : "";
 	let new_text = "* f("+z_in.toString()+") = "+z_out.toString();
