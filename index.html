@@ -25,10 +25,10 @@
 			</form>
 		</div>
 		<br />
-		<div id="input-display"></div>
+		<b><div id="input-display"></div></b>
 		<br />
 		<ul id="mathjs-tips">
-			<li>For complex modulus use 'abs(z)'</li>
+			<li>Cannot use complex modulus or 'abs(z)'</li>
 			<li>For e^z use 'exp(z)'</li>
 			<li>For ln(z) use 'log(z)'</li>
 			<li>For trigonometric functions use the format 'sin(z)'</li>
@@ -36,11 +36,13 @@
 		<h3>Enter a function of<br />complex variable z:</h3>
 		<br />
 		<br />
+		<b>
 		<ul id="function-text-display">
 			<li><div id="function-display"></div></li>
 			<br />
 			<li><div id="function-eval" ></div></li>
 		</ul>
+		</b>
 		<br />
 		<div class="form-wrap" id="function-form-wrap">
 			<form id="function-form" onsubmit="fzEntryHandle(event)">
