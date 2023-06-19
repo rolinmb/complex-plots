@@ -3,6 +3,10 @@ class cNum {
 		this.real = x;
 		this.imag = y;
 	}
+	toString(){
+		let parity = parseFloat(this.imag) >= 0 ? "+" : "";
+		return this.real+parity+this.imag+"i";
+	}
 }
 
 const i = new cNum(0,1);
@@ -24,15 +28,19 @@ function cSub(z,w){
 }
 
 function argument(z){ // real number output
-	if(x.imag != 0 || x > 0){
-		let q = z.imag/(modulus(z)+z.real);
-		return 2*Math.atan(q);
-	}else if(x > 0 && y == 0){
-		return Math.PI;
-	}else if(x == 0 && y == 0){
-		return 0;
-	}// not sure if it'll ever execute below here
-	return 0;
+	if(z.real > 0){
+		return Math.atan(z.imag/z.real);
+	}else if(z.real < 0 && z.imag >= 0){
+		return Math.arctan(z.imag/z.real)+Math.PI;
+	}else if(z.real < 0 && z.imag < 0){
+		return Math.arctan(z.imag/z.real)-Math.PI;
+	}else if(z.real == 0 && z.imag > 0){
+		return Math.PI/2;
+	}else if(z.real == 0 && z.imag < 0){
+		return -0.5*Math.PI;
+	}else if(z.real == 0 && z.imag == 0){
+		return Nan;
+	}
 }
 
 function cMult(z,w){
@@ -61,7 +69,7 @@ function cInverse(z){
 function cExp(z){
 	let ex = Math.exp(z.real);
 	let argu = argument(z);
-	return new cNum(ex*Math.cos(agru),ex*Math.sin(argu));
+	return new cNum(ex*Math.cos(argu),ex*Math.sin(argu));
 }
 
 function cPower(z,w){
@@ -80,8 +88,7 @@ function inputSubmitHandle(event){
 	let X = parseFloat(x) || 0;
 	let Y = parseFloat(y) || 0;
 	z_in = new cNum(X,Y);
-	console.log("z x: ",z_in.real);
-	console.log("z y: ",z_in.imag);
+	console.log("z = "+z_in.toString());
 	sign = parseFloat(y) >= 0 ? "+" : "";
 	document.getElementById("input-display").innerHTML = "INPUT: z = "+x+sign+y+"i";
 	// update "z-input" div
@@ -106,7 +113,9 @@ function parseExpression(expression) {
 		variables: variables || [],
 		operators: operators,
 		parentheses: parentheses || [],
+		tokens: evalExpression.match(/([+\-]?\d+(\.\d+)?|[a-zA-Z][a-zA-Z0-9]*|[+\-*/^()])/g),
 		evaluate: (z, i) => {
+			console.log(typeof z);
 			const stack = [];
 			const operatorPrecedence = {
 				'^': 3,
@@ -117,9 +126,11 @@ function parseExpression(expression) {
 			};
 			function applyOperator(operator){
 				const [b,a] = [stack.pop(),stack.pop()];
+				console.log("stack.pop()[1st call] = b: "+b+" "+typeof b);
+				console.log("stack.pop()[2nd call] = a: "+a+" "+typeof a);
 				switch(operator){
 					case '^':
-						stack.push(cExponent(a,b));
+						stack.push(cPower(a,b));
 						break;
 					case '*':
 						stack.push(cMult(a,b));
@@ -134,18 +145,22 @@ function parseExpression(expression) {
 						stack.push(cSub(a,b));
 						break;
 				}
+				console.log('stack: '+stack+" "+typeof stack);
 			}
-			const tokens = evalExpression.split(' ');
-			for(const token of tokens){
+			for(const token of parsedExpression.tokens){
 				if(token in operatorPrecedence){
-					while (stack.length > 0 && stack[stack.length - 1] in operatorPrecedence && operatorPrecedence[token] <= operatorPrecedence[stack[stack.length - 1]]) {
+					while(
+						stack.length > 0 &&
+						stack[stack.length-1] in operatorPrecedence && 
+						operatorPrecedence[token] <= operatorPrecedence[stack[stack.length-1]]
+					){
 						applyOperator(stack.pop());
 					}
 					stack.push(token);
 				}else if (token === '('){
 					stack.push(token);
 				}else if(token === ')'){
-					while (stack.length > 0 && stack[stack.length - 1] !== '(') {
+					while (stack.length > 0 && stack[stack.length-1] !== '(') {
 						applyOperator(stack.pop());
 					}					
 					stack.pop();
@@ -168,24 +183,18 @@ function fzEntryHandle(event){
 	if(fz_string === ""){ return; }
 	document.getElementById("function-display").innerHTML = "* f(z) = "+fz_string;
 	const parsed_expr = parseExpression(fz_string);
-	let result;
 	if(typeof z_in === 'undefined'){
-		z_in = new cNum(0,0);
-		result = cAdd(
-			cMult( // z^2
-				cDiv(z_in,new cNum(2,2)),
-				cDiv(z_in,new cNum(2,2))
-			),
-			i
-		);
-	}else{
-		result = parsed_expr.evaluate(z_in);
+		console.log(typeof z_in);
+		z_in = new cNum(0,0); // z^2 default
+		console.log(typeof z_in);
+		z_out = cMult(z, z);
+	}else{ // parsed expression
+		console.log(typeof z_in);
+		z_out = parsed_expr.evaluate(z_in,i);
 	}
-	console.log("f(z) x: ",result.real);
-	console.log("f(z) y: ",result.imag);
-	z_out = new cNum(result.real,result.imag);
-	fsign = result.imag >= 0 ? "+" : "";
-	let new_text = "* f("+z_in.real+sign+z_in.imag+"i) = "+z_out.real+fsign+z_out.imag+"i";
+	console.log("f("+z_in.toString()+") = "+z_out.toString());
+	fsign = z_out.imag >= 0 ? "+" : "";
+	let new_text = "* f("+z_in.toString()+") = "+z_out.toString();
 	document.getElementById("function-eval").innerHTML = new_text;
 	// update "z-output" div
 }
