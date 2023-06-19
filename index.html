@@ -24,19 +24,20 @@
 				<input id="input-submit-btn" type="submit" value="Submit Input">
 			</form>
 		</div>
-		<br />
 		<b><div id="input-display"></div></b>
 		<br />
 		<ul id="mathjs-tips">
 			<li>Cannot use complex modulus or 'abs(z)'</li>
+			<li>Cannot parse a constant function alone; for example '1'</li>
+			<li>Can parse a constants with complex variable z; for example 'z+1 or 3z or z/4'</li>
+			<li>Can parse a constant i function, or complex variable z with i; for example 'i or i*z or z*(1/i)or z+i'</li>
 			<li>For e^z use 'exp(z)'</li>
 			<li>For ln(z) use 'log(z)'</li>
 			<li>For trigonometric functions use the format 'sin(z)'</li>
 		</ul>
-		<h3>Enter a function of<br />complex variable z:</h3>
-		<br />
 		<br />
 		<b>
+		<h3>Enter a function of<br />complex variable z:</h3>
 		<ul id="function-text-display">
 			<li><div id="function-display"></div></li>
 			<br />
@@ -50,6 +51,12 @@
 				<input id="function-submit-btn" type="submit" value="Update Output Plane">
 			</form>
 		</div>
+	</div>
+	<div id="warning">
+		<b><p>
+		Not all functions will compile; if f(z)'s evaluation doesn't display then likely 
+		mathjs cannot parse the typed/entered complex function. Use parentheses heavily ( '(' and ')' ).
+		</p></b>
 	</div>
 </body>
 </html>

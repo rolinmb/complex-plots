@@ -19,3 +19,7 @@
 #function-text-display {
 	display: block;
 }
+
+#warning {
+	margin: auto;
+}
