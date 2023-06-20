@@ -20,7 +20,7 @@ function inputSubmitHandle(event){
 	const scope = { x: 0 };
 	const parsedEq = math.parse(domain,scope);
 	const compiledEq = parsedEq.compile();
-	for(let x = -50; x <= 50; ++x){
+	for(let x = -1; x <= 1; x+=0.01){
 		scope.x = x;
 		const y = compiledEq.evaluate(scope);
 		zxVals.push(x);
