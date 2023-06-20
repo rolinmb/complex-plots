@@ -56,10 +56,21 @@
 		</div>
 	</div>
 	<div id="warning">
-		<b><p>
-		Not all functions will compile; if f(z)'s evaluation doesn't display then likely 
-		mathjs cannot parse the typed/entered complex function. Use parentheses heavily ( '(' and ')' ).
-		</p></b>
+		<ul id="warning-list">	
+			<li>
+			<b><p>
+			Not all functions will compile; if f(z)'s evaluation doesn't display then likely 
+			mathjs cannot parse the typed/entered complex function. Use parentheses heavily ( '(' and ')' ).
+			</p></b>
+			</li>
+			<li>
+			<b><p>
+			You will have to refresh the app/page every time you wish to generate a new plot;
+			calling Plotly.react() isn't behaving as advertised and I am trying to fix this
+			without installing react.js ideally
+			</p></b>
+			</li>
+		</ul>
 	</div>
 </body>
 </html>
