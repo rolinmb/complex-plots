@@ -9,22 +9,21 @@
 </head>
 <body>
 	<div id="input-output">
-		<h1>Input Plane</h1>
+		<h1>Input (Domain)</h1>
 		<div class="plotly-area" id="z-input"></div>
 		<br />
-		<h1>Output Plane</h1>
+		<h1>Output (Range)</h1>
 		<div class="plotly-area" id="z-output"></div>
 	</div>
 	<div id="submit-wrap">
-		<h3>Enter a complex number<br />z as input:</h3>
+		<h3>Enter a function y = f(x)<br />as the complex input domain:</h3>
 		<div class="form-wrap" id="input-form-wrap">
 			<form id="input-form" onsubmit="inputSubmitHandle(event)">
-				<input id="x-input" type="number" step="any" value="" placeholder="x" />
-				<input id="y-input" type="number" step="any" value="" placeholder="y" />
+				<input id="input-domain" type="text" value="" placeholder="f(x)" />
 				<input id="input-submit-btn" type="submit" value="Submit Input">
 			</form>
 		</div>
-		<b><div id="input-display"></div></b>
+		<b><p id="input-eq"></p></b>
 		<br />
 		<ul id="mathjs-tips">
 			<li>Cannot use complex modulus or 'abs(z)'</li>
@@ -38,11 +37,7 @@
 		<br />
 		<b>
 		<h3>Enter a function of<br />complex variable z:</h3>
-		<ul id="function-text-display">
-			<li><div id="function-display"></div></li>
-			<br />
-			<li><div id="function-eval" ></div></li>
-		</ul>
+		<div id="function-display"></div>
 		</b>
 		<br />
 		<div class="form-wrap" id="function-form-wrap">

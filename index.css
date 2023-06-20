@@ -8,16 +8,16 @@
 	height: 400px;
 }
 
+#input-eq{
+	margin: auto;
+}
+
 #submit-wrap {
 	display: flex;
 }
 
 .form-wrap {
 	flex: 50%;
-}
-
-#function-text-display {
-	display: block;
 }
 
 #warning {

@@ -1,19 +1,34 @@
-var z_in;
-var z_out;
+var zxVals = [];
+var zyVals = [];
+var hasDrawnz = false;
+var fzxVals = [];
+var fzyVals = [];
+var hasDrawnFz = false;
 
 function inputSubmitHandle(event){
+	xVals = [];
+	yVals = [];
 	event.preventDefault();
-	const x = document.getElementById("x-input").value;
-	const y = document.getElementById("y-input").value;
-	let X = parseFloat(x) || 0;
-	let Y = parseFloat(y) || 0;
-	z_in = math.complex(X,Y);
-	document.getElementById("input-display").innerHTML = "z = "+z_in.toString();
-	var inputPlane = document.getElementById("z-input");
+	if(hasDrawnz) {
+		document.getElementById("z-input").innerHTML = "";
+		hasDrawnz = false;
+	}
+	const domain = document.getElementById("input-domain").value;
+	const scope = { x: 0 };
+	const parsedEq = math.parse(domain,scope);
+	const compiledEq = parsedEq.compile();
+	for(let x = -50; x <= 50; ++x){
+		scope.x = x;
+		const y = compiledEq.evaluate(scope);
+		zxVals.push(x);
+		zyVals.push(y);
+	}
+	document.getElementById("input-eq").innerHTML = "y = "+domain.toString();
 	let inputData = [{
-		x: [z_in.re],
-		y: [z_in.im],
-		type:"scatter"
+		x: zxVals,
+		y: zyVals,
+		type:"scatter",
+		mode: "markers"
 	}];
 	let inputLayout = {
 		title: "Complex Domain",
@@ -24,29 +39,46 @@ function inputSubmitHandle(event){
 			rangemode: 'tozero'
 		}
 	};
-	Plotly.newPlot(inputPlane,inputData,inputLayout);
+	Plotly.react('z-input',inputData,inputLayout);
+	hasDrawnz = true;
 }
 
 function fzEntryHandle(event){
+	fzxVals = [];
+	fzyVals = [];
 	event.preventDefault();
+	if(hasDrawnFz) {
+		document.getElementById("z-output").innerHTML = "";
+		hasDrawnFz = false;
+	}
 	let fz_string = document.getElementById("function-string").value;
 	if(fz_string === ""){ return; }
 	document.getElementById("function-display").innerHTML = "f(z) = "+fz_string;
 	const parsed_expr = math.parse(fz_string);
-	if(typeof z_in === 'undefined'){
-		z_in = math.complex(0,0);
+	for(let i = 0; i < zxVals.length; ++i){
+		console.log(typeof zxVals[i]);
+		console.log(typeof zyVals[i]);
+		let z = math.complex(zxVals[i],zyVals[i]);
+		console.log(typeof z);
+		console.log(z.toString());
+		let scope = {
+		  z: z,
+		  re: z.re,
+		  im: z.im,
+		  i: math.complex(0, 1),
+		  math: math
+		};
+		let result = parsed_expr.evaluate(scope);
+		console.log(typeof result);
+		console.log(result.toString());
+		fzxVals.push(result.re);
+		fzyVals.push(result.im);
 	}
-	const z = math.complex(z_in.re,z_in.im);
-	const scope = { z };
-	const result = parsed_expr.evaluate(scope);
-	z_out = math.complex(result.re,result.im);
-	let new_text = "f("+z_in.toString()+") = "+z_out.toString();
-	document.getElementById("function-eval").innerHTML = new_text;
-	var outputPlane = document.getElementById("z-output");
 	const outputData = [{
-		x: [z_out.re],
-		y: [z_out.im],
-		type:"scatter"
+		x: fzxVals,
+		y: fzyVals,
+		type:"scatter",
+		mode: "markers"
 	}];
 	let outputLayout = {
 		title: "Complex Range",
@@ -57,5 +89,6 @@ function fzEntryHandle(event){
 			rangemode: 'tozero'
 		}
 	};
-	Plotly.newPlot(outputPlane,outputData,outputLayout);
+	Plotly.newPlot("z-output",outputData,outputLayout);
+	hasDrawnFz = true;
 }
