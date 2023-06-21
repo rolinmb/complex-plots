@@ -25,7 +25,13 @@ function inputSubmitHandle(event){
 		const y = compiledEq.evaluate(scope);
 		zxVals.push(x);
 		zyVals.push(y);
-		colorValuesIn.push(math.sqrt((x**2)+(y**2)));
+	}
+	let nPoints = zxVals.length;
+	for(let i = 0; i < nPoints; ++i){
+		let red = Math.floor((255 * i) / (nPoints - 1));
+		let blue = Math.floor((255 * (nPoints - 1 - i)) / (nPoints - 1));
+		let color = `rgb(${red}, 0, ${blue})`;
+		colorValuesIn.push(color);
 	}
 	document.getElementById("input-eq").innerHTML = "y = "+domain.toString();
 	let inputData = [{
@@ -76,7 +82,13 @@ function fzEntryHandle(event){
 		let result = parsed_expr.evaluate(scope);
 		fzxVals.push(result.re);
 		fzyVals.push(result.im);
-		colorValuesOut.push(math.sqrt((result.re**2)+(result.im**2)));
+	}
+	let nPoints = fzxVals.length;
+	for(let i = 0; i < nPoints; ++i){
+		let red = Math.floor((255 * i) / (nPoints - 1));
+		let blue = Math.floor((255 * (nPoints - 1 - i)) / (nPoints - 1));
+		let color = `rgb(${red}, 0, ${blue})`;
+		colorValuesOut.push(color);
 	}
 	const outputData = [{
 		x: fzxVals,

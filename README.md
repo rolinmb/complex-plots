@@ -1,5 +1,7 @@
 Using mathjs and Plotly.js to view input and associated output of complex funcions f(z)
 
+Blue represents first drawn; red represents last drawn. Generates f(x) in increasing x order from -1 to 1.
+
 Hosted using Vercel [here](https://complex-plots.vercel.app/)
 
 You will have to refresh the app/page every time you wish to generate a new plot;
