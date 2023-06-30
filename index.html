@@ -29,46 +29,49 @@
 				<input id="input-domain" type="text" value="" placeholder="f(x)" />
 				<input id="input-submit-btn" type="submit" value="Submit Input">
 			</form>
+			<br />
+			Your input equation:<br /><b><div id="input-eq"></div></b>
 		</div>
 		<br />
-		<b><p id="input-eq"></p></b>
-		<br />
-		<b>
-		<h3>Enter a function of complex variable z:</h3>
-		<div id="function-display"></div>
-		</b>
-		<br />
 		<ul id="mathjs-tips">
-			<li>For e^z use 'exp(z)'</li>
-			<li>For ln(z) use 'log(z)'</li>
-			<li>For trigonometric functions use the format 'sin(z)'</li>
-			<li>Can parse a constants with complex variable z; for example 'z+1 or 3z or z/4'</li>
-			<li>Can parse a constant i function, or complex variable z with i; for example 'i or i*z or z*(1/i)or z+i'</li>
-			<li>Cannot use complex modulus or 'abs(z)'</li>
-			<li>Cannot parse a constant function alone; for example '1'</li>
+			<li>For e^z use exp(z)</li>
+			<li>For ln(z) use log(z)</li>
+			<li>For trigonometric functions use the format sin(z)</li>
+			<li>Can parse a constants with complex variable z; for example z+1 or 3z or z/4</li>
+			<li>Can parse a constant i function, or complex variable z with i; for example i or i*z or z*(1/i)or z+i</li>
+			<li>Cannot use complex modulus i.e. abs(z)</li>
+			<li>Cannot parse a constant function alone; for example 1</li>
 		</ul>
 		<br />
+		<b><h3>Enter a function of complex variable z:</h3></b>
 		<div class="form-wrap" id="function-form-wrap">
 			<form id="function-form" onsubmit="fzEntryHandle(event)">
 				<input id="function-string" type="text" value="" placeholder="z" />
 				<input id="function-submit-btn" type="submit" value="Update Output Plane">
 			</form>
+			<br />
+			Your complex function:<br /><b><div id="function-display"></div></b>
 		</div>
 	</div>
 	<div id="warning">
-		<ul id="warning-list">	
+		<ul id="warning-list">
 			<li>
-			<p><b>
-			Not all functions will compile; if f(z)'s evaluation doesn't display then likely 
-			mathjs cannot parse the typed/entered complex function. Use parentheses heavily ( '(' and ')' ).
-			</b></p>
+				<p><b>
+				You will have to refresh the app/page every time you wish to generate a new plot;
+				calling Plotly.react() isn't behaving as advertised and I am trying to fix this
+				without installing react.js ideally
+				</b></p>
 			</li>
 			<li>
-			<p><b>
-			You will have to refresh the app/page every time you wish to generate a new plot;
-			calling Plotly.react() isn't behaving as advertised and I am trying to fix this
-			without installing react.js ideally
-			</b></p>
+				<p><b>
+				Not all functions will compile; if f(z)'s evaluation doesn't display then likely 
+				mathjs cannot parse the typed/entered complex function. Use parentheses heavily ( '(' and ')' ).
+				</b></p>
+			</li>
+			<li>
+				<p><b>
+				Input domain is currently limited to the x-range [-2, 2] as to not overload WebGL with Plotly.js
+				</b></p>
 			</li>
 		</ul>
 	</div>
