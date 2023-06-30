@@ -1,3 +1,7 @@
+body {
+	background-image: linear-gradient(to bottom right, white, gray);
+}
+
 #input-output {
 	display: flex;
 	border: 1;
