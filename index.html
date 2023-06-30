@@ -16,13 +16,7 @@
 		<div class="plotly-area" id="z-output"></div>
 	</div>
 	<div id="submit-wrap">
-		<h3>Enter a function y = f(x)<br />as the complex input domain:</h3>
-		<div class="form-wrap" id="input-form-wrap">
-			<form id="input-form" onsubmit="inputSubmitHandle(event)">
-				<input id="input-domain" type="text" value="" placeholder="f(x)" />
-				<input id="input-submit-btn" type="submit" value="Submit Input">
-			</form>
-		</div>
+		<h3>Enter a function y = f(x) as the complex input domain:</h3>
 		<div id="input-tips">
 			<p>
 				Imagine that every point on the input plane is a complex number,<br />
@@ -30,8 +24,19 @@
 				traditional "real axis"
 			</p>
 		</div>
+		<div class="form-wrap" id="input-form-wrap">
+			<form id="input-form" onsubmit="inputSubmitHandle(event)">
+				<input id="input-domain" type="text" value="" placeholder="f(x)" />
+				<input id="input-submit-btn" type="submit" value="Submit Input">
+			</form>
+		</div>
 		<br />
 		<b><p id="input-eq"></p></b>
+		<br />
+		<b>
+		<h3>Enter a function of complex variable z:</h3>
+		<div id="function-display"></div>
+		</b>
 		<br />
 		<ul id="mathjs-tips">
 			<li>For e^z use 'exp(z)'</li>
@@ -42,11 +47,6 @@
 			<li>Cannot use complex modulus or 'abs(z)'</li>
 			<li>Cannot parse a constant function alone; for example '1'</li>
 		</ul>
-		<br />
-		<b>
-		<h3>Enter a function of<br />complex variable z:</h3>
-		<div id="function-display"></div>
-		</b>
 		<br />
 		<div class="form-wrap" id="function-form-wrap">
 			<form id="function-form" onsubmit="fzEntryHandle(event)">
